@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-goenv_path="/usr/local/goenv"
+goenv_path="$HOME/.goenv"
 go_url="https://storage.googleapis.com/golang"
 
 # Colors
@@ -82,16 +82,18 @@ function goenv() {
         fi
 
         local version=$1
-        if [[ -d /usr/local/goenv/$version ]] ; then 
+        if [[ -d $goenv_path/$version ]] ; then 
             # remove symlink
-            rm -f /usr/local/go 
-            ln -s $goenv_path/$version /usr/local/go
+            rm -f $GOROOT 
+            ln -s $goenv_path/$version $GOROOT
             echo -e "${gre}switched go version."
             echo -n -e "${blu}"
             echo -e `go version`
             echo -n -e "${de}"
         else
-            help 
+            echo -e "${red}Error: Not exists version. ${version}${de}"
+            echo -e "your installed go versions:"
+            list
         fi
     }
 
