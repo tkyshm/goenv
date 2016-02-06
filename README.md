@@ -14,7 +14,7 @@ If you use zsh shell, you can use completion (need to install `_goenv` into your
 Please check `goenv help` command.
 
 ## Comment
-Now Go installing path is `/usr/local/goenv` in `goenv`. So, you should set parmission to be able to access with own user.
+Now Go installing path is `$HOME/.goenv` in `goenv`. 
 
 ## License
 MIT License.
