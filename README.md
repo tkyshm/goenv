@@ -4,7 +4,7 @@
 
 ```
 $ git clone https://github.com/tkyshm/goenv.git
-$ mv bin/goenv /usr/loca/bin
+$ mv bin/goenv /usr/local/bin
 ```
 
 If you use zsh shell, you can use completion (need to install `_goenv` into your zsh competions dir).
