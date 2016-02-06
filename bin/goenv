@@ -1,0 +1,122 @@
+#!/bin/bash
+set -e
+
+goenv_path="/usr/local/goenv"
+go_url="https://storage.googleapis.com/golang"
+
+# Colors
+red="\e[31m"
+gre="\e[32m"
+yel="\e[33m"
+blu="\e[34m"
+pup="\e[35m"
+nei="\e[36m"
+de="\e[39m"
+
+function goenv() {
+    typeset -a modes
+
+    usage() {
+        echo " goenv command list:"
+        echo ""
+        echo "      help: display how to use goenv command."
+        echo "       use: switches your go version."
+        echo "      list: lists your go versions."
+        echo "   install: install go."
+        echo ""
+    }
+
+    help() {
+        case $1 in
+            use)
+                echo -e "$red[ERROR] Does not exist version (/usr/local/goenv): $1"
+                echo -e "$de"
+                echo -e "You have versions:"
+                echo -n -e "\t"
+                echo `ls /usr/local/goenv`
+                echo -e "$de"
+                echo -e " ${gre}NOTE: you must only specify number of version, without 'go' literal."
+                echo -e "$de"
+                ;;
+            install)
+                echo -e "Usage: goenv install <version>"
+                echo ""
+                echo -e " <version> is the version of go (e.g. go1.5.3)."
+                echo ""
+                ;;
+            *)
+                usage
+        esac
+    }
+
+    install() {
+        mkdir -p $goenv_path
+        local version=$1
+        local filename=${version}.linux-amd64.tar.gz
+        echo -e "${gre}Starts to install ${version}. ($goenv_path/$version)${de}"
+        if [[ $version != "" ]] ; then
+            if [[ -d "$goenv_path/$version" ]] ; then
+                echo -e "${yel}Warning: Already installed ${version}."
+            else
+                cd /tmp
+                if [[ ! -f "${filename}" ]] ; then
+                    curl -O -o -L $go_url/${version}.linux-amd64.tar.gz 
+                fi
+                tar zxf ${filename} 
+                mv go $goenv_path/${version}
+            fi
+            echo -e "${gre}Succeed to install ${version}.${de}"
+        else
+            echo -e "${yel}TODO: ${de}help how to use install command."
+        fi
+    }
+
+    list() {
+        echo `ls $goenv_path`
+    }
+
+    use() {
+        if [[ $# -ne 1 ]] ; then
+            help
+            return
+        fi
+
+        local version=$1
+        if [[ -d /usr/local/goenv/$version ]] ; then 
+            # remove symlink
+            rm -f /usr/local/go 
+            ln -s $goenv_path/$version /usr/local/go
+            echo -e "${gre}switched go version."
+            echo -n -e "${blu}"
+            echo -e `go version`
+            echo -n -e "${de}"
+        else
+            help 
+        fi
+    }
+
+    case $1 in
+        help)
+            help $2
+            return 
+            ;;
+        install)
+            install $2
+            return
+            ;;
+        list)
+            list
+            return
+            ;;
+        use)
+            use $2
+            return
+            ;;
+        *)
+            help
+            return
+            ;;
+    esac
+}
+
+goenv $@
