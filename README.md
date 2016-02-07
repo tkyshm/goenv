@@ -1,6 +1,6 @@
 # goenv
 
-## install
+## Install
 
 ```
 $ git clone https://github.com/tkyshm/goenv.git
