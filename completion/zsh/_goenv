@@ -7,6 +7,7 @@ _goenv() {
             'help[display how to use command.]' \
             'list[lists your go versions.]' \
             'install[install go.]' \
+            'fetch[caches go versions for completions.]' \
             'uninstall[uninstall your installed go.]' \
             'use[switches the version of your installed go.]'
     else
@@ -14,8 +15,14 @@ _goenv() {
             use|uninstall)
                 _values "installed your go versions" `ls $HOME/.goenv/root`
                 ;;
+            install)
+                if [[ -f "$HOME/.goenv/.version_list" ]] ; then
+                    _values "available install versions" `cat $HOME/.goenv/.version_list`
+                fi
+                ;;
             help)
                 _values "command list" list install use 
+                ;;
         esac
     fi
 }

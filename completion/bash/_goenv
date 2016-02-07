@@ -7,8 +7,14 @@ _goenv() {
     if [[ $COMP_CWORD -eq 2 ]] ; then
         case ${COMP_WORDS[1]} in
             use|uninstall)
-                versions=`ls $HOME/.goenv/root`
+                local versions=`ls $HOME/.goenv/root`
                 COMPREPLY=( $(compgen -W "$versions" -- $cur) )
+                ;;
+            install)
+                if [[ -f "$HOME/.goenv/.version_list" ]] ; then
+                    local versions=`ls $HOME/.goenv/.version_list`
+                    COMPREPLY=( $(compgen -W "$versions" -- $cur) )
+                fi
                 ;;
             help)
                 COMPREPLY=( $(compgen -W "install list use" -- $cur) )
