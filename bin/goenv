@@ -40,6 +40,10 @@ function goenv() {
                 echo -e " If you check your go versions, execute 'goenv list'."
                 echo ""
                 ;;
+            fetch)
+                echo -e "Usage: goenv fetch"
+                echo -e " fetchs available go verions and caches to $versions_list."
+                ;;
             list)
                 echo -e "Usage: goenv list"
                 ;;
@@ -56,11 +60,10 @@ function goenv() {
     }
 
     fetch() {
-        echo -e "${gre}fetch you can install go versions...${de}"
-        rm -f $versions_list
+        touch $versions_list
         local list=`git ls-remote -t https://go.googlesource.com/go | awk -F/ '{ print $NF }' | grep go`
-        echo "$list" > $versions_list
-        echo -e "${gre}done.${de}"
+        echo "$list"
+        echo "$list" >! $versions_list
     }
 
     install() {

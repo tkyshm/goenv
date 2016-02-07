@@ -17,7 +17,7 @@ _goenv() {
                 fi
                 ;;
             help)
-                COMPREPLY=( $(compgen -W "install list use" -- $cur) )
+                COMPREPLY=( $(compgen -W "install list use fetch uninstall" -- $cur) )
                 ;;
         esac
     fi

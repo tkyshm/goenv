@@ -21,7 +21,7 @@ _goenv() {
                 fi
                 ;;
             help)
-                _values "command list" list install use 
+                _values "command list" list install use fetch uninstall
                 ;;
         esac
     fi
