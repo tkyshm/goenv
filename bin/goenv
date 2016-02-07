@@ -21,19 +21,20 @@ function goenv() {
     usage() {
         echo " goenv command list:"
         echo ""
-        echo "      help: display how to use goenv command."
-        echo "       use: switches your go version."
-        echo "      list: lists your go versions."
-        echo "   install: install go."
+        echo "        help: display how to use goenv command."
+        echo "         use: switches your go version."
+        echo "        list: lists your go versions."
+        echo "     install: install go."
+        echo "   uninstall: uninstall your installed go."
         echo ""
     }
 
     help() {
         case $1 in
-            use)
-                echo -e "Usage: goenv use <installed_go_version>"
+            use|uninstall)
+                echo -e "Usage: goenv $1 <installed_go_version>"
                 echo ""
-                echo -e " <installed_go_version> is the version of your installed go at $HOME/.goenv."
+                echo -e " <installed_go_version> is the version of your installed go at $version_root."
                 echo -e " If you check your go versions, execute 'goenv list'."
                 echo ""
                 ;;
@@ -48,6 +49,7 @@ function goenv() {
                 ;;
             *)
                 usage
+                ;;
         esac
     }
 
@@ -70,6 +72,21 @@ function goenv() {
             echo -e "${gre}Succeed to install ${version}.${de}"
         else
             usage "install"
+        fi
+    }
+
+    uninstall() {
+        if [[ $# -eq 1 ]] ; then
+            version=$1
+            if [[ -d "${version_root}/${version}" ]] ; then
+                echo -e "${gre}Delete ${version}. ($version_root/$version)${de}"
+                rm -rf $version_root/$version
+            else
+                echo -e "${pup}Does not exists ${version}. ($version_root/$version)${de}"
+            fi
+        else
+            help "uninstall"
+            return
         fi
     }
 
@@ -101,7 +118,7 @@ function goenv() {
     }
 
     case ${modes[0]} in
-        help|install|use)
+        help|install|use|uninstall)
             ${modes[0]} ${modes[1]}
             return 
             ;;

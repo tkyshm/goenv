@@ -7,10 +7,11 @@ _goenv() {
             'help[display how to use command.]' \
             'list[lists your go versions.]' \
             'install[install go.]' \
+            'uninstall[uninstall your installed go.]' \
             'use[switches the version of your installed go.]'
     else
         case $words[CURRENT-1] in
-            use)
+            use|uninstall)
                 _values "installed your go versions" `ls $HOME/.goenv/root`
                 ;;
             help)
