@@ -11,7 +11,7 @@ _goenv() {
     else
         case $words[CURRENT-1] in
             use)
-                _values "installed your go versions" `ls $HOME/.goenv`
+                _values "installed your go versions" `ls $HOME/.goenv/root`
                 ;;
             help)
                 _values "command list" list install use 

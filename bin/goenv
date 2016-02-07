@@ -2,6 +2,7 @@
 set -e
 
 goenv_path="$HOME/.goenv"
+version_root="$goenv_path/root"
 go_url="https://storage.googleapis.com/golang"
 
 # Colors
@@ -51,12 +52,12 @@ function goenv() {
     }
 
     install() {
-        mkdir -p $goenv_path
+        mkdir -p $version_root
         local version=$1
         local filename=${version}.linux-amd64.tar.gz
-        echo -e "${gre}Starts to install ${version}. ($goenv_path/$version)${de}"
+        echo -e "${gre}Starts to install ${version}. ($version_root/$version)${de}"
         if [[ $version != "" ]] ; then
-            if [[ -d "$goenv_path/$version" ]] ; then
+            if [[ -d "$version_root/$version" ]] ; then
                 echo -e "${yel}Warning: Already installed ${version}."
             else
                 cd /tmp
@@ -64,7 +65,7 @@ function goenv() {
                     curl -O -o -L $go_url/${version}.linux-amd64.tar.gz 
                 fi
                 tar zxf ${filename} 
-                mv go $goenv_path/${version}
+                mv go $version_root/${version}
             fi
             echo -e "${gre}Succeed to install ${version}.${de}"
         else
@@ -73,7 +74,7 @@ function goenv() {
     }
 
     list() {
-        echo `ls $goenv_path`
+        echo `ls $version_root`
     }
 
     use() {
@@ -84,10 +85,10 @@ function goenv() {
         fi
 
         local version=$1
-        if [[ -d $goenv_path/$version ]] ; then 
+        if [[ -d "$version_root/${version}" ]] ; then 
             # remove symlink
             rm -f $GOROOT 
-            ln -s $goenv_path/$version $GOROOT
+            ln -s $version_root/$version $GOROOT
             echo -e "${gre}switched go version."
             echo -n -e "${blu}"
             echo -e `go version`
