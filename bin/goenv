@@ -60,10 +60,9 @@ function goenv() {
     }
 
     fetch() {
-        touch $versions_list
         local list=`git ls-remote -t https://go.googlesource.com/go | awk -F/ '{ print $NF }' | grep go`
         echo "$list"
-        echo "$list" >! $versions_list
+        echo "$list" > $versions_list
     }
 
     install() {
